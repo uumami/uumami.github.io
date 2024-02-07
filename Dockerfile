@@ -24,8 +24,8 @@ RUN git config --global --add safe.directory /app
 # Install Dependencies
 RUN bundle
 
-# Expose port 4000
+# Expose port 4000 
 EXPOSE 4000
 
 # Command to start Jekyll server
-CMD ["/bin/bash", "-c", "/app/tools/init && bundle exec jekyll serve"]
+CMD ["/bin/bash", "-c", "/app/tools/init && bundle exec jekyll serve --watch"]

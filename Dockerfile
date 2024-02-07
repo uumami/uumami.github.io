@@ -28,4 +28,4 @@ RUN bundle
 EXPOSE 4000
 
 # Command to start Jekyll server
-CMD ["/bin/bash", "-c", "/app/tools/init && bundle exec jekyll serve --host=0.0.0.0"]
+CMD ["/bin/bash", "-c", "/app/tools/init && bundle exec jekyll serve"]

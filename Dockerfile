@@ -21,8 +21,6 @@ RUN git config --global user.email "vazcorm@gmail.com"
 RUN git config --global user.name "uumami"
 RUN git config --global --add safe.directory /app
 
-
-RUN bash /app/tools/init
 # Install Dependencies
 RUN bundle
 

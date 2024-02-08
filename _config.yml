@@ -16,14 +16,14 @@ timezone: America/Mexico_City
 
 title: uumami's # the main title
 
-tagline: professional husbande # it will display as the sub-title
+tagline: AI/Econ/Bio/husbande # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  AI/Econ researcher
+  AI/Econ/Bio
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
-url: ""
+url: "https://github.com/uumami"
 
 github:
   username: uumami # change to your github username
@@ -38,8 +38,8 @@ social:
   email: vazcorm@gmail.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
-    - https://twitter.com/username # change to your twitter homepage
-    - https://github.com/username # change to your github homepage
+    - https://twitter.com/husbandes # change to your twitter homepage
+    - https://github.com/uumami # change to your github homepage
     # Uncomment below to add more social links
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
@@ -63,7 +63,7 @@ google_analytics:
 #     light  - Use the light color scheme
 #     dark   - Use the dark color scheme
 #
-theme_mode: # [light|dark]
+theme_mode:  [light|dark]
 
 # The CDN endpoint for images.
 # Notice that once it is assigned, the CDN url

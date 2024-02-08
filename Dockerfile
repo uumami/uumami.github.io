@@ -22,7 +22,7 @@ RUN git config --global --add safe.directory /app
 COPY . .
 
 # Install Dependencies
-#RUN bundle
+RUN bundle
 
 # Expose port 4000 
 EXPOSE 4000

@@ -1,31 +1,31 @@
-FROM ruby:3.1
+FROM ruby:3.1-slim-bullseye as jekyll
 
-# Install Node.js and npm
-RUN apt-get update -qq && apt-get install -y nodejs npm
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Jekyll and Bundler
-RUN gem install jekyll bundler
+# used in the jekyll-server image, which is FROM this image
+COPY docker-entrypoint.sh /usr/local/bin/
 
-# Set the working directory inside the container
-WORKDIR /app
+RUN gem update --system && gem install jekyll && gem cleanup
 
-# # Install npm dependencies
-# COPY package.json package-lock.json /app/
-# RUN npm install
-
-# Git config
-RUN git config --global user.email "vazcorm@gmail.com"
-RUN git config --global user.name "uumami"
-RUN git config --global --add safe.directory /app
-
-# Copy project files
-COPY . .
-
-# Install Dependencies
-RUN bundle
-
-# Expose port 4000 
 EXPOSE 4000
+EXPOSE 35729
 
-# Command to start Jekyll server
-CMD ["/bin/bash", "-c", "/app/tools/init && bundle exec jekyll serve --watch --livereload"]
+WORKDIR /site
+
+ENTRYPOINT [ "jekyll" ]
+
+CMD [ "--help" ]
+
+# build from the image we just built with different metadata
+FROM jekyll as jekyll-serve
+COPY . /site 
+RUN bundle install --retry 5 --jobs 20
+RUN bundle exec jekyll build
+
+# on every container start, check if Gemfile exists and warn if it's missing
+ENTRYPOINT [ "docker-entrypoint.sh" ]
+
+CMD [ "bundle", "exec", "jekyll", "serve","--livereload-min-delay", "10" ,"--open-url","--force_polling", "-H", "0.0.0.0", "-P", "4000" ]

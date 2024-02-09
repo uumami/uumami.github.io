@@ -19,7 +19,7 @@ timezone: America/Mexico_City
 
 title: uumami's # the main title
 
-tagline: AI/Econ/Bio/husbande # it will display as the sub-title
+tagline: AI/Econ/Bio/husbande/123 # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   AI/Econ/Bio

@@ -17,12 +17,12 @@ timezone: America/Mexico_City
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: uumami's # the main title
+title: uumami # the main title
 
-tagline: AI/Bio/Econ/husbande # it will display as the sub-title
+tagline: ai/bio/econ/husbande # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  AI/Econ/Bio
+  ai/bio/econ
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.

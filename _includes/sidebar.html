@@ -64,8 +64,10 @@
           {%- capture url -%}
             javascript:location.href = 'mailto:' + ['{{ email[0] }}','{{ email[1] }}'].join('@')
           {%- endcapture -%}
-        {% when 'rss' %}
-          {% assign url = '/feed.xml' | relative_url %}
+        {% when 'linkedin' %}
+        {%- capture url -%}
+        https://www.linkedin.com/in/mario-v%C3%A1zquez-corte-b9a944155/
+      {%- endcapture -%}
         {% else %}
           {% assign url = entry.url %}
       {% endcase %}

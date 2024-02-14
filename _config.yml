@@ -4,7 +4,10 @@ livereload: true     # You no longer need to include --livereload
 reload_port: 35729    # If you don't want to use the default port
 include:
   - .js
-  
+kramdown:
+  input: GFM
+  math_engine: mathjax
+
 # Import the theme
 theme: jekyll-theme-chirpy
 

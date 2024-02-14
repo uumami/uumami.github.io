@@ -1,12 +1,9 @@
 # The Site Configuration
 
-livereload: true     # You no longer need to include --livereload
-reload_port: 35729    # If you don't want to use the default port
+livereload: true # You no longer need to include --livereload
+reload_port: 35729 # If you don't want to use the default port
 include:
   - .js
-kramdown:
-  input: GFM
-  math_engine: mathjax
 
 # Import the theme
 theme: jekyll-theme-chirpy
@@ -42,7 +39,6 @@ twitter:
 linkedin:
   username: https://www.linkedin.com/in/mario-v%C3%A1zquez-corte-b9a944155/ # change to your linkedin username
 
-
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
@@ -76,7 +72,7 @@ google_analytics:
 #     light  - Use the light color scheme
 #     dark   - Use the dark color scheme
 #
-theme_mode:  #[dark|light]
+theme_mode: #[dark|light]
 
 # The CDN endpoint for images.
 # Notice that once it is assigned, the CDN url
@@ -86,7 +82,7 @@ theme_mode:  #[dark|light]
 img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar: assets/img/pfp/frierien_gpus_transformed.png
+avatar: assets/img/pfp/marx_00.webp
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
@@ -134,6 +130,8 @@ paginate: 10
 # ------------ The following options are not recommended to be modified ------------------
 
 kramdown:
+  input: GFM
+  math_engine: mathjax
   syntax_highlighter: rouge
   syntax_highlighter_opts: # Rouge Options › https://github.com/jneen/rouge#full-options
     css_class: highlight

@@ -3,29 +3,34 @@ layout: post
 title: about me
 date: 2024-02-13
 categories: [me]
-tags: [about,me] 
+tags: [about, me]
 author: uumami
 ---
 
 # About Me
-I'm uumami funding [Vinlandia](https://en.wikipedia.org/wiki/Vinland_Saga_(manga)). Nobody has enemies, only [nakamas](https://onepiece.fandom.com/wiki/Talk:Nakama); yet, the only true enemy is entropy. I have studied and researched economics and computer science at an academic level, and biology as a hobby. Based in Mexico.  
 
-(Communist) c/acc (not e/acc). Communism is closer to anarcho-capitalism than you would believe, yet the focus is on societal and individual freedom and not corportaions. Too se what i (and others) define as communism see *economic views* below.  
+I'm uumami funding [Vinlandia](<https://en.wikipedia.org/wiki/Vinland_Saga_(manga)>). Nobody has enemies, only [nakamas](https://onepiece.fandom.com/wiki/Talk:Nakama); yet, the only true enemy is entropy. I have studied and researched economics and computer science at an academic level, and biology as a hobby. Based in Mexico.
 
-I really enjoy life, and that is the reason I want to be immortal, or at least contribute to future immortality. I really want to see how physics models, computational complexity and computability, video games, and food develop in the future, and spend more time with people in general (it is really nice). I find it really strange that some people want to die; for me, that is (mostly-) a symptom of the wicked and ruthless system we live in. Nevertheless violence, deception, or lies should never be the path. Any system that starts like that is just wrong, it has do develop from real actionable principles. 
+(Communist) c/acc (not e/acc). Communism is closer to anarcho-capitalism than you would believe, yet the focus is on societal and individual freedom and not corportaions. Too se what i (and others) define as communism see _economic views_ below.
+
+I really enjoy life, and that is the reason I want to be immortal, or at least contribute to future immortality. I really want to see how physics models, computational complexity and computability, video games, and food develop in the future, and spend more time with people in general (it is really nice). I find it really strange that some people want to die; for me, that is (mostly-) a symptom of the wicked and ruthless system we live in. Nevertheless violence, deception, or lies should never be the path. Any system that starts like that is just wrong, it has do develop from real actionable principles.
 
 I am part of [sonder.art](https://github.com/sonder-art)
 
 ## What I want to do
+
 I want to solve longevity. I think the data to simulate organisms (with omics-data?) under interventions is out there, scattered on the web or in real organisms. After conducting an extreme sample of that data, we can leverage it using AI models by creating pre-trained/unsupervised models ready to be consumed by the simulations. A huge milestone would be to simulate a complete cycle of a simple cell using models trained on data. Then we can move to other types of cells, tissues, organs, and then organisms. But for that to happen, we really need to gather a lot of data. So the first step should be to benchmark and combine the already existing pre-trained models that use omics data and molecules.
 
 ## What I really really want to do
+
 So basically, I want to be part of the humans that beat entropy, solve P vs NP and accolades, achieve immortality for every human/sentient-being that wants it, play video games, write sci-fi novels and sequels to Dune 6 (everything written by Brian Herbert is crap), eat all the food and drinks, leave the solar system, get to a [Kardashev-Civ](https://en.wikipedia.org/wiki/Kardashev_scale) level 4 or $ \Omega $ (total overdrive), watch anime, and just speak to my fellow humans.
 
 ## What I Like
-Aside from what I've already mentioned, I spend my time reading (I always talk about Dune II, IV, and the Three-Body Problem), bouldering/climbing, playing video games (like Civ 6 and Smash Bros), coding (like this), walking, music (math-rock, instrumental, jazz and j-pop/rock) and reading (again). 
+
+Aside from what I've already mentioned, I spend my time reading (I always talk about Dune II, IV, and the Three-Body Problem), bouldering/climbing, playing video games (like Civ 6 and Smash Bros), coding (like this), walking, music (math-rock, instrumental, jazz and j-pop/rock) and reading (again).
 
 ## What I've Done
+
 I have worked mostly in industry and tangentially in academia.  
 My teams developed, trained, and deployed multiple AI systems to production that have been used by traditional retailers such as [Bimbo](https://en.wikipedia.org/wiki/Grupo_Bimbo) and subsidiaries, [Cinépolis](https://en.wikipedia.org/wiki/Cin%C3%A9polis), and [Pochteca](https://english.pochteca.net/) to name a few.  
 I also worked as a data scientist, backend, ML engineer, and product owner at [superbio.ai](https://www.superbio.ai/). I designed half of the backend and cloud pipelines at the time while also trained and fine-tuned multiple models. I worked with many pretrained models focused on molecules, some omics-data and LLMs.
@@ -34,16 +39,8 @@ Academically speaking, I have published a paper where we created the [Mentat/Mat
 
 I teach AI classes for the Data Science Department at [ITAM](https://en.wikipedia.org/wiki/Instituto_Tecnol%C3%B3gico_Aut%C3%B3nomo_de_M%C3%A9xico). I also created a series of online courses for the first data science graduate degree in Mexico at [IEXE](https://www-iexe-edu-mx.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=en&_x_tr_pto=sc).
 
-## The Image
-<div align="center">
-  <img src="/assets/img/pfp/frierien_gpus_transformed.png" alt="Frieren Communist GPUs"/>
-  <p>Frieren Communist GPUs</p>
-</div>
-
-The image comes from the anime [Frieren](https://en.wikipedia.org/wiki/Frieren) and the [meme](https://knowyourmeme.com/memes/you-can-just-give-this-kind-of-thing-to-men-and-they-will-be-thrilled). Frieren, the elven immortal mage, has beaten the Demon King alongside her friends in a span of about 10 years, yet since she has lived more than a thousand years, it is just a glimpse of her life. Frieren has spent all her life collecting spells and seeing the world as eternal. It is not until one of her old party members dies that she feels guilty of not connecting with others. The image depicts Frieren giving communist GPUs/TPUs (chips) because that is what I really want: a communist distributed system that is capable of computing in a massive parallel way and chips for training AI models.
-
-
 # Views (Kind of)
+
 ## Economic Views
 
 I find that the most common mistake people make is equating communism with centralization, which is completely wrong. Marx's communism aimed for a world without government, for example. Communism has more to do with how and who makes decisions regarding production and who gets the revenue, than with centralization. Evil people and countries like the USSR and western fanatics gave it a bad name. For a good source of what communism is, you can check [Richard Wolff's podcast with Lex Friedman](https://www.youtube.com/watch?v=o0Bi-q89j5Y), read it [here](https://www.democracyatwork.info/eu_what_is_communism), or google it.
@@ -52,29 +49,30 @@ I'm communist/acc, which means I favor un-centralized techno-communism. I aim fo
 
 Classical (Smith/Ricardo) -> Marginalist (JS Mill) ->  
 Austrian (Von Mises & Hayek) -> Neoliberal (Lucas & Objectivism) ->  
-Communist (Marx, Kalecki) -> Techno-Communist (me and others) -> ???  
+Communist (Marx, Kalecki) -> Techno-Communist (me and others) -> ???
 
 I have treated them as a stack, not dropping all together but trying to come up with a synthesis. If everyone were good, then I think most economic systems would somehow work out-of-the-box; sadly, that is not the case. For that reason, we need to change the capitalistic-market rules for communist-market rules. For me, that means actually giving people the true option of choice and freedom which requires guaranteed access to wealth for everybody, not just the seemingly naive "freedom" the current markets give us.
 
 The easiest way I can encapsulate this is by applying Rawls's veil of ignorance to economics: **If you were going to be reborn as a baby anywhere in the world at this moment with no recollection of your past life (as an actual newborn) whatsoever, are you happy with the probabilities/chances and wealth allocation you would probably get?**
-+ If your answer is (mostly) yes, then you believe the world is fair (which would be really strange, and I would like to hear you). If you are on the lower end of the wealth spectrum, then it makes sense because the probability of being better off is quite large.
-+ If your answer is (mostly) no, then we need to change it because it is not fair.
+
+- If your answer is (mostly) yes, then you believe the world is fair (which would be really strange, and I would like to hear you). If you are on the lower end of the wealth spectrum, then it makes sense because the probability of being better off is quite large.
+- If your answer is (mostly) no, then we need to change it because it is not fair.
 
 Our manipulation of entropy can't be compromised by the slavery created in capitalism, nor due to efficiency or moral grounds. If we want to actually solve problems, then let's cooperate to solve problems instead of disguising solving the problem behind money generation (printer goes brr brr).
 
 ## General Philosophical Views
+
 I'm an absurdist (close to Camus), materialist, atheist (I practice Buddhism), Aristotelian, empiricist, and rationalist combined with other stuff. I have passed through many philosophical transformations:
 
-Aristotelian -> Descartes/Spinoza -> Hume/Nietzsche (mostly eternal recurrence themes) -> Wittgenstein/Materialism (Marxist) -> Absurdist -> ???  
+Aristotelian -> Descartes/Spinoza -> Hume/Nietzsche (mostly eternal recurrence themes) -> Wittgenstein/Materialism (Marxist) -> Absurdist -> ???
 
 I do have a position on ontology, but it is mostly anti-Platonic. I really don't like Plato, and I think ontological discourses are mostly mental gymnastics, especially when they are far from the physics realm. Though I do not discard the possibility that consciousness is elemental, though I would bet against it.
 
 ## About Hero(ines)
-I try not to put heroes on pedestals, since with a.s probability they will fall. Some examples are Pearson, Fisher and Galton that were awful human beings that shaped statistics. That said I do have some hero(ines): [John Von Neuman](https://en.wikipedia.org/wiki/John_von_Neumann), [E. T Jaynes](https://en.wikipedia.org/wiki/Edwin_Thompson_Jaynes), [Daphne Koller](https://en.wikipedia.org/wiki/Daphne_Koller), [Cynthia Kenyon](https://en.wikipedia.org/wiki/Cynthia_Kenyon) to name a few.
 
+I try not to put heroes on pedestals, since with a.s probability they will fall. Some examples are Pearson, Fisher and Galton that were awful human beings that shaped statistics. That said I do have some hero(ines): [John Von Neuman](https://en.wikipedia.org/wiki/John_von_Neumann), [E. T Jaynes](https://en.wikipedia.org/wiki/Edwin_Thompson_Jaynes), [Daphne Koller](https://en.wikipedia.org/wiki/Daphne_Koller), [Cynthia Kenyon](https://en.wikipedia.org/wiki/Cynthia_Kenyon) to name a few.
 
 <div align="center">
   <img src="assets/img/art/jvn.png" alt="Tribute to John Von Neuman"/>
   <p>John Von Neuman</p>
 </div>
-

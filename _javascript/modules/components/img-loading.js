@@ -35,6 +35,7 @@ function switchLQIP() {
 
   $img.attr('src', encodeURI(src));
   $img.removeAttr(ATTR_DATA_SRC);
+  handleImage.call(this); // Add this line to ensure the cover is removed
 }
 
 export function loadImg() {

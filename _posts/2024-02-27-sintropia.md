@@ -109,6 +109,9 @@ In order to achieve this, we propose the use of pre-trained models (autoencoders
 ### benchmarking
 To achieve a trustworthy and comprehensive framework, we need to distribute and benchmark all the models and simulations. So, an important step is creating a set of rules for standardization of metrics, either for existing or new models, alongside their visualization and comparison. Thus, we need to create the necessary tools so the user can easily access and contribute to them.
 
+### coding patters and designs
+the library also needs to incorporate good practices in the design either computationally speaking or biological. The idea is to let the user focus on solving the problem and not on tangential problems.
+
 ### existing tools (we are copycats)
 We don't want to build from scratch if it is unnecessary, so we want to stand on the shoulders of giants and use their infrastructure. For example, Hugging Face is an excellent tool for uploading and maintaining the model repository, WandB for visualization, and PyTorch/JAX/TensorFlow for training and so on. Our aim is to make a useful library that also minimizes the entropy expenditure during construction, so if there is no need to build again, we won't.
 

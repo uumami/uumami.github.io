@@ -122,3 +122,7 @@ We don't want to build from scratch if it is unnecessary, so we want to stand on
 To get up to speed and in response to currently being GPU poor we are going to replicate the results from the scGPT [paper](https://www.nature.com/articles/s41592-024-02201-0) and [repo](https://github.com/bowang-lab/scGPT) with quantization and add ana analysis using conformal prediction (part of the benchmarking process). This is our current [fork](https://github.com/sonder-art/scGPT) for replicating the experiments.
 
 We also just noticed this new paper [Sequence modeling and design from molecular to genome scale with Evo](https://arcinstitute.org/manuscripts/Evo), which seems a huge milestone in this process. So benchmarking and replications is underway.
+
+# Extras
+Image made with the beautiful model [Animagine XL 3.0](https://huggingface.co/cagliostrolab/animagine-xl-3.0?text=1girl%2C+frieren%2C+frieren%2C+white+hair%2C+laboratory%2C+newest%2C+high+quality)  
+Benevolent contributors for life: [danndroid](https://github.com/danndroid) and Jesus Sesma

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variety profunda: Ashby, Beer, Espejo y matrices</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  --bg:#11100d;--ink:#f5f0e7;--muted:#beb6a7;--dim:#837b6f;
+  --panel:#1d1914;--panel2:#252016;--line:#383229;--line2:#615643;
+  --teal:#2dd4bf;--amber:#f9b115;--red:#ff5a5f;--green:#6ee763;--violet:#a78bfa;--cyan:#70d6ff;
+  --shadow:0 30px 90px rgba(0,0,0,.42);
+}
+html,body{height:100%;width:100%;margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}
+body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(245,240,231,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(245,240,231,.035) 1px,transparent 1px);background-size:72px 72px;pointer-events:none}
+body::after{content:"";position:fixed;inset:0;background:radial-gradient(circle at 18% 0%,rgba(45,212,191,.13),transparent 30%),radial-gradient(circle at 88% 10%,rgba(249,177,21,.11),transparent 26%);pointer-events:none}
+button,input{font:inherit}
+#progress{position:fixed;top:0;left:0;height:5px;width:0;background:linear-gradient(90deg,var(--teal),var(--amber),var(--red));z-index:30;transition:width .25s ease}
+.deck{position:fixed;inset:0;overflow:hidden;z-index:1}
+.slide{position:absolute;inset:0;padding:48px;display:grid;grid-template-rows:auto 1fr;gap:28px;opacity:0;transform:translateX(48px);transition:opacity .32s ease,transform .32s ease;pointer-events:none;overflow:auto}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:auto}
+.slide.prev{transform:translateX(-48px)}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:42px}
+.kicker{font-size:.82rem;text-transform:uppercase;letter-spacing:.16em;color:var(--amber);font-weight:850}
+.section-num{font-size:.82rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.canvas{height:100%;width:100%;display:grid;gap:30px;align-items:stretch;min-width:0}
+.hero{grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr)}
+.split{grid-template-columns:repeat(2,minmax(0,1fr))}
+.split-wide{grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr)}
+.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+.center{align-items:center;justify-items:center;text-align:center}
+h1,h2,h3,p,ul,ol{margin:0;overflow-wrap:break-word}
+h1{font-size:4.9rem;line-height:.96;letter-spacing:0;font-weight:950;max-width:13ch}
+h2{font-size:3.05rem;line-height:1.03;letter-spacing:0;font-weight:930;max-width:19ch}
+h3{font-size:1.46rem;line-height:1.12;color:var(--amber);font-weight:880}
+p,li{font-size:1.22rem;line-height:1.43;color:var(--muted)}
+li{margin:.42rem 0}
+ul.clean{padding:0;list-style:none}
+ul.clean li{border-top:1px solid var(--line);padding:.82rem 0 .48rem;margin:0}
+strong{color:var(--ink)}
+.big-copy{font-size:1.55rem;line-height:1.36;color:var(--ink)}
+.small{font-size:1rem;color:var(--dim);line-height:1.35}
+.micro{font-size:.82rem;color:var(--dim);line-height:1.35;text-transform:uppercase;letter-spacing:.12em;font-weight:800}
+.panel{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);box-shadow:var(--shadow);padding:26px;min-width:0;min-height:0;display:flex;flex-direction:column;gap:18px;justify-content:center}
+.panel.top{justify-content:flex-start}.panel.tight{gap:12px;padding:20px}
+.panel.teal{border-top:6px solid var(--teal)}.panel.amber{border-top:6px solid var(--amber)}.panel.red{border-top:6px solid var(--red)}.panel.green{border-top:6px solid var(--green)}.panel.violet{border-top:6px solid var(--violet)}.panel.cyan{border-top:6px solid var(--cyan)}
+.note{border-left:5px solid var(--amber);padding:1rem 1.15rem;background:rgba(249,177,21,.08)}
+.note p{color:var(--ink)}
+.formula{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:3.25rem;line-height:1.08;font-weight:950;color:var(--teal);letter-spacing:0}
+.formula.small-formula{font-size:2.03rem;color:var(--amber)}
+.eq-stack{display:grid;gap:12px}
+.eq-line{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:1.28rem;line-height:1.35;color:var(--ink);border-top:1px solid var(--line);padding-top:12px}
+.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;color:var(--amber);font-weight:850}
+.pill-row{display:flex;flex-wrap:wrap;gap:12px}.pill{border:1px solid var(--line2);background:rgba(245,240,231,.06);padding:.58rem .82rem;border-radius:999px;font-size:1rem;color:var(--ink);font-weight:780}.pill.teal{border-color:rgba(45,212,191,.65);color:var(--teal)}.pill.amber{border-color:rgba(249,177,21,.65);color:var(--amber)}.pill.red{border-color:rgba(255,90,95,.65);color:var(--red)}.pill.violet{border-color:rgba(167,139,250,.65);color:var(--violet)}
+.diagram{width:100%;height:100%;min-height:360px;border:1px solid var(--line);background:rgba(0,0,0,.18);min-width:0;display:grid;place-items:center;padding:22px}
+.loop{width:min(620px,90%);aspect-ratio:1.35;border:8px solid var(--amber);border-radius:50%;position:relative;display:grid;place-items:center}
+.loop::after{content:"";position:absolute;top:2%;left:56%;border-left:48px solid var(--amber);border-top:28px solid transparent;border-bottom:28px solid transparent}
+.loop .inner{width:42%;aspect-ratio:1;border:6px solid var(--teal);border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--ink);font-size:2.1rem;font-weight:950}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;align-items:center;width:100%}.flow .box{border:1px solid var(--line2);padding:18px;text-align:center;background:rgba(0,0,0,.18);min-height:120px;display:grid;place-items:center;color:var(--ink);font-weight:850}.flow .arrow{font-size:2rem;color:var(--amber);text-align:center}
+.matrix-table{width:100%;border-collapse:collapse;border:1px solid var(--line);background:rgba(0,0,0,.16);font-size:1rem}.matrix-table th,.matrix-table td{border:1px solid var(--line);padding:11px 9px;text-align:center;color:var(--muted);vertical-align:middle}.matrix-table th{color:var(--ink);background:rgba(245,240,231,.06);font-weight:850}.matrix-table .rowhead{text-align:left;color:var(--ink);font-weight:850;white-space:nowrap}.matrix-table .good{background:rgba(110,231,99,.16);color:var(--green);font-weight:900}.matrix-table .bad{background:rgba(255,90,95,.15);color:var(--red);font-weight:900}.matrix-table .warn{background:rgba(249,177,21,.15);color:var(--amber);font-weight:900}.matrix-table .neutral{background:rgba(45,212,191,.12);color:var(--teal);font-weight:900}.matrix-table .violet{background:rgba(167,139,250,.13);color:var(--violet);font-weight:900}.matrix-table .dimmed{color:var(--dim);background:rgba(0,0,0,.12)}
+.matrix-caption{font-size:.96rem;color:var(--dim);line-height:1.38;margin-top:10px}
+.metric{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;align-items:baseline}.metric .n{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:3rem;font-weight:950;color:var(--amber);line-height:1}.metric .l{font-size:1.04rem;color:var(--muted)}
+.lab{display:grid;grid-template-columns:1fr 1fr;gap:22px;height:100%}.control-stack{display:grid;gap:16px;align-content:center}.field{display:grid;grid-template-columns:1fr 120px;gap:14px;align-items:center;border-top:1px solid var(--line);padding-top:14px}.field label{font-size:1.03rem;color:var(--muted);font-weight:780}.field input{width:100%;background:#0f0d0b;border:1px solid var(--line2);color:var(--ink);padding:.55rem .65rem;border-radius:6px;text-align:right;font-weight:850}
+.readout{display:grid;gap:16px;align-content:center;border:1px solid var(--line);background:rgba(0,0,0,.19);padding:24px}.readout .value{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:3.7rem;line-height:1;font-weight:950;color:var(--teal)}.readout .caption{font-size:1.06rem;color:var(--muted)}
+.status{border-left:5px solid var(--amber);padding:1rem 1.2rem;background:rgba(249,177,21,.08);font-size:1.12rem;color:var(--ink)}.status.good{border-left-color:var(--green);background:rgba(110,231,99,.08)}.status.bad{border-left-color:var(--red);background:rgba(255,90,95,.08)}
+.bars{display:grid;gap:12px}.bar{height:26px;background:#0e0d0b;border:1px solid var(--line);position:relative;overflow:hidden}.bar span{position:absolute;left:0;top:0;bottom:0;width:20%;background:var(--teal);transition:width .2s ease}.bar.amber span{background:var(--amber)}.bar.red span{background:var(--red)}.bar-label{display:flex;justify-content:space-between;font-size:.9rem;color:var(--dim);font-weight:780;text-transform:uppercase;letter-spacing:.08em}
+.order-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;height:100%}.order-card{border:1px solid var(--line);background:rgba(0,0,0,.18);padding:24px;display:grid;grid-template-rows:auto auto 1fr;gap:15px}.order-card .rank{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:4rem;font-weight:950;line-height:.9}.order-card.first .rank{color:var(--teal)}.order-card.second .rank{color:var(--amber)}.order-card.third .rank{color:var(--violet)}
+.system-list{display:grid;gap:12px}.system-row{display:grid;grid-template-columns:80px 1fr;gap:14px;align-items:center;border:1px solid var(--line);padding:14px;background:rgba(0,0,0,.16)}.system-row .sys{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:2.1rem;font-weight:950;color:var(--teal);text-align:center}
+.takeaway{display:grid;grid-template-columns:72px 1fr;gap:18px;align-items:flex-start;border-top:1px solid var(--line);padding:18px 0}.takeaway .mark{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:2.35rem;color:var(--amber);font-weight:950;line-height:1}
+.nav{position:fixed;right:22px;bottom:18px;z-index:40;display:flex;align-items:center;gap:10px;background:rgba(17,16,13,.78);backdrop-filter:blur(10px);border:1px solid var(--line);padding:8px;border-radius:999px}.nav button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);background:#1c1914;color:var(--ink);font-size:1.35rem;cursor:pointer;line-height:1}.nav button:hover{border-color:var(--amber);color:var(--amber)}.nav button:disabled{opacity:.35;cursor:not-allowed}#counter{min-width:70px;text-align:center;font-size:.95rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.source-strip{position:fixed;left:24px;bottom:20px;color:var(--dim);font-size:.78rem;z-index:35;letter-spacing:.08em;text-transform:uppercase;font-weight:800}
+@media (max-width:1100px){.slide{padding:28px;gap:20px}.hero,.split,.split-wide,.three,.four,.lab,.order-grid{grid-template-columns:minmax(0,1fr)}.flow{grid-template-columns:1fr}.flow .arrow{transform:rotate(90deg)}h1{font-size:3.55rem}h2{font-size:2.45rem}p,li{font-size:1.08rem}.big-copy{font-size:1.3rem}.formula{font-size:2.55rem}.diagram{min-height:300px}}
+@media (max-width:700px){.deck{inset:0 0 70px}.slide{padding:22px 18px}.canvas{height:auto}.topline{align-items:flex-start;flex-direction:column;gap:8px}h1{font-size:2.55rem}h2{font-size:1.95rem}h3{font-size:1.25rem}p,li{font-size:1rem}.panel{padding:18px}.formula{font-size:1.95rem}.readout .value{font-size:2.55rem}.field{grid-template-columns:1fr}.source-strip{display:none}.nav{left:18px;right:18px;bottom:10px;justify-content:center}.nav button{width:38px;height:38px}.matrix-table{font-size:.86rem}.matrix-table th,.matrix-table td{padding:8px 6px}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<main class="deck" id="deck">
+
+<section class="slide active">
+  <div class="topline"><div class="kicker">Canon 07 · Cibernética desde Variety</div><div class="section-num">Ashby · Beer · Espejo</div></div>
+  <div class="canvas hero center">
+    <div class="panel teal">
+      <div class="pill-row"><span class="pill teal">Variety</span><span class="pill amber">matrices</span><span class="pill red">Ashby</span><span class="pill violet">VE > VO > VM</span></div>
+      <h1>Variety Profunda</h1>
+      <p class="big-copy">Un deck en español para entender estados, distinciones, matrices, Ashby's Law, desired states y variedad residual antes de leer a Espejo.</p>
+    </div>
+    <div class="diagram"><div class="loop"><div class="inner">distinguir<br><span class="small">para actuar</span></div></div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Idea guía</div><div class="section-num">01 / Por qué empezar con Variety</div></div>
+  <div class="canvas split-wide">
+    <div class="panel amber"><h2>La cibernética no empieza con control. Empieza con distinciones.</h2><p class="big-copy">No puedes regular lo que no puedes distinguir, y no necesitas distinguir lo que no cambia tu acción.</p></div>
+    <div class="panel top">
+      <h3>La pregunta base</h3>
+      <ul class="clean">
+        <li>¿Qué estados puede tomar el mundo?</li>
+        <li>¿Qué estados puede observar el sistema?</li>
+        <li>¿Qué estados cambian la respuesta?</li>
+        <li>¿Qué resultados son deseables?</li>
+        <li>¿Qué variedad queda sin absorber?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Feedback</div><div class="section-num">02 / El bucle mínimo</div></div>
+  <div class="canvas split">
+    <div class="panel top teal">
+      <h2>Feedback es acción corregida por consecuencias.</h2>
+      <ul class="clean">
+        <li><strong>Sensor:</strong> observa estados.</li>
+        <li><strong>Comparator:</strong> compara contra target.</li>
+        <li><strong>Actuator:</strong> aplica una response.</li>
+        <li><strong>Environment:</strong> devuelve consecuencias y sorpresas.</li>
+      </ul>
+    </div>
+    <div class="diagram"><div class="flow"><div class="box">sensor</div><div class="arrow">→</div><div class="box">comparar</div><div class="arrow">→</div><div class="box">actuar</div></div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Definición</div><div class="section-num">03 / Qué es Variety</div></div>
+  <div class="canvas split">
+    <div class="panel teal"><h2>Variety es el número de estados distinguibles y relevantes.</h2><div class="formula">V = |S<sub>rel</sub>|</div><p class="big-copy">No es "muchos datos". Es cardinalidad de clases que importan para una decisión, riesgo o propósito.</p></div>
+    <div class="panel top">
+      <h3>Estados distintos dependen de propósito</h3>
+      <ul class="clean">
+        <li>Para una moneda normal: V = 2, cara o cruz.</li>
+        <li>Para un dado: V = 6.</li>
+        <li>Para un dado roto con "1" en todas las caras: V = 1.</li>
+        <li>Para un médico, "dolor" no basta: localización, duración, causa y riesgo crean más estados.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Tipos de Variety</div><div class="section-num">04 / El vocabulario mínimo</div></div>
+  <div class="canvas split-wide">
+    <div class="panel top amber">
+      <h2>Hay varias variedades importantes.</h2>
+      <div class="metric">
+        <div class="n">V<sub>abs</sub></div><div class="l">estados físicos posibles</div>
+        <div class="n">V<sub>obs</sub></div><div class="l">estados distinguibles por sensores/categorías</div>
+        <div class="n">V<sub>reg</sub></div><div class="l">estados que cambian la respuesta regulatoria</div>
+        <div class="n">V<sub>res</sub></div><div class="l">variedad residual que no fue absorbida</div>
+      </div>
+    </div>
+    <div class="panel top">
+      <h3>Idea clave</h3>
+      <p class="big-copy">Una organización vive en la variedad que sus sensores, reglas, roles y herramientas hacen visible.</p>
+      <div class="note"><p>Big data importa porque aumenta distinciones posibles. Governance importa porque decide quién puede actuar sobre ellas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Notación</div><div class="section-num">05 / Ashby, Beer, Espejo</div></div>
+  <div class="canvas split">
+    <div class="panel top teal">
+      <h2>Ashby: ley del regulador</h2>
+      <div class="metric">
+        <div class="n">VD</div><div class="l">Disturbance Variety</div>
+        <div class="n">VR</div><div class="l">Response Variety</div>
+        <div class="n">VO</div><div class="l">Outcome Variety</div>
+        <div class="n">VT</div><div class="l">Target Variety / desirable states</div>
+      </div>
+    </div>
+    <div class="panel top red">
+      <h2>Espejo: desbalance estructural</h2>
+      <div class="metric">
+        <div class="n">VE</div><div class="l">Environmental Variety</div>
+        <div class="n">VO</div><div class="l">Organizational Variety</div>
+        <div class="n">VM</div><div class="l">Management Variety</div>
+      </div>
+      <div class="note"><p>Ojo: VO significa Outcome Variety en Ashby, pero Organizational Variety en Espejo. El deck lo etiqueta cada vez.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Partición</div><div class="section-num">06 / Observar es clasificar</div></div>
+  <div class="canvas split-wide">
+    <div class="panel amber">
+      <h2>Formalmente, observar es mapear el mundo a clases.</h2>
+      <div class="eq-stack">
+        <div class="eq-line">Omega = conjunto de estados físicos posibles</div>
+        <div class="eq-line">q: Omega -> S = regla de observación</div>
+        <div class="eq-line">V<sub>q</sub> = |q(Omega)|</div>
+      </div>
+      <p class="big-copy">Dos estados físicos son equivalentes si q(x) = q(y).</p>
+    </div>
+    <div class="panel top">
+      <h3>Ejemplo del bouncer</h3>
+      <ul class="clean">
+        <li>Hay 100 personas con edades exactas distintas.</li>
+        <li>La regla del club sólo distingue "menor de 21" y "21+".</li>
+        <li>La variedad efectiva para el club es 2.</li>
+        <li>Si agregas VIP, riesgo o ticket falso, la partición se refina y sube la Variety.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Matriz de observación</div><div class="section-num">07 / Atenuar con categorías</div></div>
+  <div class="canvas split">
+    <div class="panel top amber">
+      <h2>La matriz A muestra cómo el sensor colapsa estados.</h2>
+      <table class="matrix-table"><thead><tr><th>edad real</th><th>&lt;21</th><th>21+</th></tr></thead><tbody><tr><td class="rowhead">17</td><td class="good">1</td><td class="dimmed">0</td></tr><tr><td class="rowhead">20</td><td class="good">1</td><td class="dimmed">0</td></tr><tr><td class="rowhead">21</td><td class="dimmed">0</td><td class="good">1</td></tr><tr><td class="rowhead">34</td><td class="dimmed">0</td><td class="good">1</td></tr><tr><td class="rowhead">88</td><td class="dimmed">0</td><td class="good">1</td></tr></tbody></table>
+      <p class="matrix-caption">Muchas filas, dos columnas no vacías: Vobs = 2.</p>
+    </div>
+    <div class="panel top">
+      <h3>Lectura</h3>
+      <ul class="clean">
+        <li>Muchas filas a una columna = attenuation.</li>
+        <li>Una columna vacía no cuenta como variedad actual.</li>
+        <li>Una fila ambigua indica sensor defectuoso.</li>
+        <li>Un nuevo sensor divide columnas existentes.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Matriz morfológica</div><div class="section-num">08 / Contar estados potenciales</div></div>
+  <div class="canvas split-wide">
+    <div class="panel top teal">
+      <h2>Si las dimensiones fueran independientes, multiplicas.</h2>
+      <table class="matrix-table"><thead><tr><th>dimensión</th><th>opciones</th><th>n</th></tr></thead><tbody><tr><td class="rowhead">tamaño</td><td>chico, mediano, grande</td><td class="neutral">3</td></tr><tr><td class="rowhead">bebida</td><td>espresso, latte, mocha, té</td><td class="neutral">4</td></tr><tr><td class="rowhead">leche</td><td>entera, avena, soya, sin leche</td><td class="neutral">4</td></tr><tr><td class="rowhead">temperatura</td><td>caliente, helada</td><td class="neutral">2</td></tr></tbody></table>
+      <p class="matrix-caption">Vpotencial = 3 x 4 x 4 x 2 = 96.</p>
+    </div>
+    <div class="panel top amber">
+      <h3>Pero cuidado</h3>
+      <ul class="clean">
+        <li>Multiplicar supone independencia.</li>
+        <li>Reglas, física, menú, inventario y cultura eliminan combinaciones.</li>
+        <li>Más opciones para clientes pueden saturar operaciones.</li>
+        <li>Este máximo todavía no es Variety regulatoria.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Compatibilidad</div><div class="section-num">09 / Restar estados imposibles</div></div>
+  <div class="canvas split">
+    <div class="panel top amber">
+      <h2>La matriz C marca combinaciones viables.</h2>
+      <table class="matrix-table"><thead><tr><th>bebida/temp</th><th>caliente</th><th>helada</th></tr></thead><tbody><tr><td class="rowhead">espresso</td><td class="good">1</td><td class="bad">0</td></tr><tr><td class="rowhead">latte</td><td class="good">1</td><td class="good">1</td></tr><tr><td class="rowhead">té</td><td class="good">1</td><td class="good">1</td></tr><tr><td class="rowhead">frappé</td><td class="bad">0</td><td class="good">1</td></tr></tbody></table>
+      <p class="matrix-caption">No hay 8 estados bebida-temperatura. Hay 6.</p>
+    </div>
+    <div class="panel top">
+      <h3>Fórmula</h3>
+      <div class="eq-stack"><div class="eq-line">V = sum C<sub>ij</sub></div><div class="eq-line">C<sub>ij</sub>=1 si la combinación es viable</div><div class="eq-line">C<sub>ij</sub>=0 si es imposible o irrelevante</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Constraints</div><div class="section-num">10 / Fórmula general</div></div>
+  <div class="canvas split-wide">
+    <div class="panel teal">
+      <h2>Con restricciones, Variety es suma sobre estados válidos.</h2>
+      <div class="eq-stack"><div class="eq-line">S = X<sub>1</sub> x X<sub>2</sub> x ... x X<sub>n</sub></div><div class="eq-line">V = |{x en S : g(x)=1}|</div><div class="eq-line">V <= product |X<sub>i</sub>|</div></div>
+    </div>
+    <div class="panel top red">
+      <h3>Errores</h3>
+      <ul class="clean">
+        <li><strong>Overcount:</strong> contar combinaciones imposibles.</li>
+        <li><strong>Undercount:</strong> colapsar diferencias que cambian outcomes.</li>
+        <li><strong>Alias:</strong> dos nombres para la misma respuesta.</li>
+        <li><strong>Hidden coupling:</strong> dependencia revelada sólo en crisis.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Response Variety</div><div class="section-num">11 / No cuentes botones, cuenta efectos</div></div>
+  <div class="canvas split-wide">
+    <div class="panel top teal">
+      <h2>VR real = respuestas con efectos no equivalentes.</h2>
+      <table class="matrix-table"><thead><tr><th>disturbance</th><th>reboot</th><th>update driver</th><th>replace disk</th></tr></thead><tbody><tr><td class="rowhead">mouse congelado</td><td class="good">OK</td><td class="bad">FAIL</td><td class="bad">FAIL</td></tr><tr><td class="rowhead">pantalla azul</td><td class="good">OK</td><td class="warn">MAYBE</td><td class="bad">FAIL</td></tr><tr><td class="rowhead">disco dañado</td><td class="bad">FAIL</td><td class="bad">FAIL</td><td class="good">OK</td></tr></tbody></table>
+      <p class="matrix-caption">El reboot absorbe dos disturbances. No absorbe el disco dañado.</p>
+    </div>
+    <div class="panel top">
+      <h3>Colapsos</h3>
+      <ul class="clean">
+        <li>Filas iguales: disturbances indistinguibles para el regulador.</li>
+        <li>Columnas iguales: respuestas redundantes.</li>
+        <li>Una herramienta nueva agrega columna.</li>
+        <li>Un diagnóstico nuevo separa filas.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Matriz de control</div><div class="section-num">12 / Target hits y errores</div></div>
+  <div class="canvas split">
+    <div class="panel top amber">
+      <h2>Una outcome matrix muestra si existe control.</h2>
+      <table class="matrix-table"><thead><tr><th></th><th>R1</th><th>R2</th><th>R3</th></tr></thead><tbody><tr><td class="rowhead">D1</td><td class="good">T</td><td class="bad">E</td><td class="bad">E</td></tr><tr><td class="rowhead">D2</td><td class="bad">E</td><td class="good">T</td><td class="bad">E</td></tr><tr><td class="rowhead">D3</td><td class="bad">E</td><td class="bad">E</td><td class="good">T</td></tr><tr><td class="rowhead">D4</td><td class="bad">E</td><td class="bad">E</td><td class="bad">E</td></tr></tbody></table>
+      <p class="matrix-caption">T = dentro del target. E = error. D4 no tiene respuesta suficiente.</p>
+    </div>
+    <div class="panel top red">
+      <h3>Interpretación</h3>
+      <ul class="clean">
+        <li>Si cada fila tiene T, existe política posible.</li>
+        <li>Si una fila no tiene T, falta VR o sobra VD.</li>
+        <li>Si no sabes qué fila está activa, falta observación.</li>
+        <li>Si el target cambia, celdas T pueden volverse E.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Derivación</div><div class="section-num">13 / Por qué VO >= VD / VR</div></div>
+  <div class="canvas split-wide">
+    <div class="panel teal">
+      <h2>La ley sale de contar pares respuesta-resultado.</h2>
+      <div class="eq-stack"><div class="eq-line">VD <= VR x VO</div><div class="eq-line">por lo tanto: VO >= VD / VR</div><div class="eq-line">en enteros: VO >= ceil(VD / VR)</div></div>
+      <p class="big-copy">Si hay más disturbances que pares posibles de response y outcome, algunos estados quedan sin distinguir o sin controlar.</p>
+    </div>
+    <div class="panel top">
+      <h3>Toy example</h3>
+      <ul class="clean">
+        <li>VD = 12 disturbances.</li>
+        <li>VR = 3 responses reales.</li>
+        <li>En el mejor caso, cada response agrupa 4 disturbances.</li>
+        <li>Entonces quedan al menos 4 outcome classes.</li>
+      </ul>
+      <div class="formula small-formula">12 / 3 = 4</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Buckets</div><div class="section-num">14 / La intuición del agrupamiento</div></div>
+  <div class="canvas three">
+    <div class="panel top teal"><h3>R1</h3><p>D1, D2, D3, D4</p><p class="small">un bucket de disturbances</p></div>
+    <div class="panel top amber"><h3>R2</h3><p>D5, D6, D7, D8</p><p class="small">otro bucket</p></div>
+    <div class="panel top violet"><h3>R3</h3><p>D9, D10, D11, D12</p><p class="small">tercer bucket</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Target Variety</div><div class="section-num">15 / Estados deseables</div></div>
+  <div class="canvas split">
+    <div class="panel green">
+      <h2>Regular bien significa que VO cabe dentro de VT.</h2>
+      <div class="formula">VO <= VT</div>
+      <p class="big-copy">VT es el conjunto de estados aceptables. No siempre es un único estado exacto.</p>
+    </div>
+    <div class="panel top">
+      <h3>Ejemplos</h3>
+      <ul class="clean">
+        <li>Temperatura cómoda: 20-24 °C. VT no es un punto, es un rango.</li>
+        <li>Paciente vivo y estable: muchos signos vitales aceptables.</li>
+        <li>Producción normal: varios ritmos posibles si calidad y seguridad se mantienen.</li>
+        <li>Si VT = "perfecto", casi todo parece falla.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Target edge cases</div><div class="section-num">16 / Demasiado estrecho o demasiado amplio</div></div>
+  <div class="canvas split">
+    <div class="panel top red"><h2>Target demasiado estrecho</h2><p class="big-copy">Una respuesta útil falla si el target exige un único estado imposible.</p><ul class="clean"><li>Ejemplo: "cero demora siempre".</li><li>El sistema se declara fallido aunque atienda bien prioridades críticas.</li></ul></div>
+    <div class="panel top amber"><h2>Target demasiado amplio</h2><p class="big-copy">Un target amplio puede esconder daño real.</p><ul class="clean"><li>Ejemplo: "cualquier paciente vivo".</li><li>Ignora dolor, secuelas, inequidad y tiempo de espera.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Wall example</div><div class="section-num">17 / El muro no viola Ashby</div></div>
+  <div class="canvas split-wide">
+    <div class="panel red">
+      <h2>El muro reduce VD efectiva antes de la regulación.</h2>
+      <div class="formula small-formula">VD<sub>eff</sub> = VD / A</div>
+      <p class="big-copy">100 especies de insectos no requieren 100 respuestas si un domo impide que entren como estados relevantes.</p>
+    </div>
+    <div class="panel top">
+      <h3>Domo de vidrio</h3>
+      <ul class="clean">
+        <li>Antes: VD = 100 especies atacando cultivo.</li>
+        <li>Después: VD_eff = 1 categoría, "insectos afuera".</li>
+        <li>El domo es attenuation, no response variety mágica.</li>
+        <li>El insecto que excava por debajo es residual variety.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Equivalencia</div><div class="section-num">18 / Reboot como colapso regulatorio</div></div>
+  <div class="canvas split">
+    <div class="panel teal"><h2>Distintos problemas pueden ser el mismo estado para una response.</h2><p class="big-copy">Mouse congelado, pantalla azul y software lento son etiquetas distintas. Si reboot los corrige, colapsan en una clase regulatoria.</p></div>
+    <div class="panel top"><h3>Pero no confundas causa con regulación</h3><ul class="clean"><li>Misma respuesta efectiva no significa misma causa.</li><li>Una herramienta nueva puede separar estados.</li><li>Una diagnosis nueva puede revelar hidden variety.</li><li>La clasificación vive dentro del repertorio de respuestas.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Amplification</div><div class="section-num">19 / Aumentar VR efectiva</div></div>
+  <div class="canvas split">
+    <div class="panel amber"><h2>Amplificar es aumentar lo que el regulador puede hacer.</h2><div class="formula small-formula">VR<sub>eff</sub> = VR x K</div><p class="big-copy">Entrenamiento, herramientas, scripts, delegación y canales multiplican affordances.</p></div>
+    <div class="panel top"><h3>Script de IT</h3><ul class="clean"><li>Un admin arregla una máquina a la vez.</li><li>Un script aplica una response a 500 máquinas.</li><li>No cambió el humano; cambió su affordance.</li><li>Sin target, la amplificación puede automatizar errores.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Residual Variety</div><div class="section-num">20 / Lo que debe escalar</div></div>
+  <div class="canvas split">
+    <div class="panel red"><h2>Residual Variety es lo que no absorbieron operaciones, filtros ni rutinas.</h2><p class="big-copy">Management no debería manejar todo. Debería manejar excepciones, tensiones no resueltas y conflictos de política.</p></div>
+    <div class="panel top"><h3>Diseño sano</h3><ul class="clean"><li>Lo normal se resuelve en S1/local.</li><li>Filtros envían excepciones, no todo el flujo.</li><li>Si todo escala, el centro está sobrecargado.</li><li>Si nada escala, el sistema está ciego.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Inquiry loop</div><div class="section-num">21 / Cuando una herramienta revela nueva Variety</div></div>
+  <div class="canvas split-wide">
+    <div class="panel amber"><h2>Aprender puede aumentar la variedad percibida.</h2><p class="big-copy">Ibuprofeno puede aliviar dolor de cabeza y tobillo. Para esa response parecen un estado. Una radiografía revela estructuras distintas.</p><div class="formula small-formula">misma response != misma causa</div></div>
+    <div class="panel top"><h3>Qué cambia</h3><ul class="clean"><li>Se refina q: más estados observados.</li><li>Se actualiza el Black Box model.</li><li>Aparecen nuevas responses: yeso, cirugía, derivación.</li><li>Sube Variety percibida y también control potencial.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Entropy</div><div class="section-num">22 / Variety efectiva probabilística</div></div>
+  <div class="canvas split-wide">
+    <div class="panel teal"><h2>Cuando los estados tienen probabilidades, usa entropy.</h2><div class="eq-stack"><div class="eq-line">H(X) = -sum p(x) log2 p(x)</div><div class="eq-line">Veff = 2^H</div></div><p class="big-copy">Veff pregunta cuántos estados equiprobables tendrían la misma sorpresa promedio.</p></div>
+    <div class="panel top"><h3>Cuatro estados</h3><table class="matrix-table"><thead><tr><th>estado</th><th>uniforme</th><th>sesgado</th></tr></thead><tbody><tr><td class="rowhead">A</td><td>25%</td><td class="warn">85%</td></tr><tr><td class="rowhead">B</td><td>25%</td><td>5%</td></tr><tr><td class="rowhead">C</td><td>25%</td><td>5%</td></tr><tr><td class="rowhead">D</td><td>25%</td><td>5%</td></tr></tbody></table><p class="matrix-caption">Uniforme: H=2 bits, Veff=4. Sesgado: menor H, pero D puede ser crítico.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Rare states</div><div class="section-num">23 / Baja probabilidad no elimina obligación</div></div>
+  <div class="canvas three">
+    <div class="panel top teal"><h3>Promedio</h3><p>Un estado raro baja poco la entropy promedio.</p><p class="small">Sirve para carga esperada.</p></div>
+    <div class="panel top amber"><h3>Riesgo</h3><p>Un estado raro puede dominar pérdida esperada si el daño es enorme.</p><p class="small">Hospital, seguridad, finanzas.</p></div>
+    <div class="panel top red"><h3>Gobernanza</h3><p>La response variety debe reservar capacidad para outliers críticos.</p><p class="small">No todo se decide por frecuencia.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Transition matrix</div><div class="section-num">24 / Variety en el tiempo</div></div>
+  <div class="canvas split">
+    <div class="panel top amber"><h2>Los estados generan trayectorias.</h2><table class="matrix-table"><thead><tr><th>hoy/mañana</th><th>estable</th><th>alerta</th><th>crisis</th></tr></thead><tbody><tr><td class="rowhead">estable</td><td class="good">.80</td><td class="warn">.18</td><td class="bad">.02</td></tr><tr><td class="rowhead">alerta</td><td class="good">.35</td><td class="warn">.45</td><td class="bad">.20</td></tr><tr><td class="rowhead">crisis</td><td class="good">.10</td><td class="warn">.35</td><td class="bad">.55</td></tr></tbody></table></div>
+    <div class="panel top"><h3>Explosión temporal</h3><ul class="clean"><li>Con V estados y horizonte T: hasta V^T trayectorias.</li><li>Feedback evita planear todo de antemano.</li><li>La memoria aumenta Variety si el futuro depende de historia.</li><li>Controlar estados diarios no garantiza controlar trayectorias largas.</li></ul><div class="formula small-formula">V<sub>traj</sub> <= V<sup>T</sup></div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Bit budget</div><div class="section-num">25 / Atenuar y amplificar en log-space</div></div>
+  <div class="canvas split-wide">
+    <div class="panel teal"><h2>En bits, la regulación parece presupuesto.</h2><div class="eq-stack"><div class="eq-line">log VO >= log VD - log VR</div><div class="eq-line">attenuators restan bits de disturbance</div><div class="eq-line">amplifiers suman bits de response</div></div></div>
+    <div class="panel top"><h3>Ejemplo</h3><table class="matrix-table"><thead><tr><th>paso</th><th>factor</th><th>Variety</th><th>bits</th></tr></thead><tbody><tr><td class="rowhead">ambiente</td><td>VD</td><td class="bad">1024</td><td>10</td></tr><tr><td class="rowhead">filtro</td><td>/8</td><td class="warn">128</td><td>7</td></tr><tr><td class="rowhead">responses</td><td>/16</td><td class="neutral">8</td><td>3</td></tr><tr><td class="rowhead">target</td><td>VT</td><td class="good">4</td><td>2</td></tr></tbody></table><p class="matrix-caption">Queda VO=8, pero el target acepta 4. Falta 1 bit de regulación.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Interactive lab</div><div class="section-num">26 / Ashby calculator</div></div>
+  <div class="canvas split">
+    <div class="panel top amber"><h2>Prueba la ley</h2><p class="big-copy">Cambia VD, VR y VT. La slide calcula VO mínima y si el target se cumple.</p><div class="control-stack"><div class="field"><label for="vd">VD · Disturbance Variety</label><input id="vd" type="number" min="1" max="1000000" value="64"></div><div class="field"><label for="vr">VR · Response Variety</label><input id="vr" type="number" min="1" max="1000000" value="8"></div><div class="field"><label for="vt">VT · Target Variety</label><input id="vt" type="number" min="1" max="1000000" value="4"></div></div></div>
+    <div class="panel top"><div class="readout"><div><div class="caption">VO mínima</div><div class="value" id="vo">8</div></div><div><div class="caption">VR necesaria: ceil(VD / VT)</div><div class="value" id="need" style="color:var(--amber)">16</div></div><div id="regStatus" class="status bad">No alcanza la response variety.</div></div><div class="bars"><div class="bar-label"><span>VR disponible</span><span id="barRText">8</span></div><div class="bar"><span id="barR"></span></div><div class="bar-label"><span>VR necesaria</span><span id="barNText">16</span></div><div class="bar amber"><span id="barN"></span></div></div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Interactive lab</div><div class="section-num">27 / Attenuation + Amplification</div></div>
+  <div class="canvas split">
+    <div class="panel top teal"><h2>Cambia componentes del sistema</h2><p class="big-copy">Atenuadores reducen VD efectiva; amplificadores aumentan VR efectiva.</p><div class="control-stack"><div class="field"><label for="baseVd">VD base</label><input id="baseVd" type="number" min="1" max="1000000" value="1024"></div><div class="field"><label for="att">attenuation factor A</label><input id="att" type="number" min="1" max="1000000" value="8"></div><div class="field"><label for="baseVr">VR base</label><input id="baseVr" type="number" min="1" max="1000000" value="4"></div><div class="field"><label for="amp">amplification factor K</label><input id="amp" type="number" min="1" max="1000000" value="4"></div><div class="field"><label for="target2">VT</label><input id="target2" type="number" min="1" max="1000000" value="4"></div></div></div>
+    <div class="panel top"><div class="readout"><div><div class="caption">VD efectiva = VD/A</div><div class="value" id="vdEff">128</div></div><div><div class="caption">VR efectiva = VR*K</div><div class="value" id="vrEff" style="color:var(--amber)">16</div></div><div><div class="caption">VO resultante</div><div class="value" id="voEff" style="color:var(--green)">8</div></div><div id="engStatus" class="status bad">Aún falta variedad.</div></div></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Audit</div><div class="section-num">28 / Errores clásicos</div></div>
+  <div class="canvas four">
+    <div class="panel top teal"><h3>Sensor noise</h3><p>Contar ruido como estado real.</p></div>
+    <div class="panel top amber"><h3>Hidden Variety</h3><p>Colapsar diferencias que luego cambian outcomes.</p></div>
+    <div class="panel top red"><h3>Dashboard inflation</h3><p>Muchas métricas, pocas responses.</p></div>
+    <div class="panel top violet"><h3>Adversarial Variety</h3><p>El ambiente aprende tus filtros.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Beer</div><div class="section-num">29 / Variety engineering</div></div>
+  <div class="canvas split">
+    <div class="panel top red"><h2>Attenuators</h2><ul class="clean"><li>Filtros de excepción.</li><li>Estándares y protocolos.</li><li>Buffers, colas, inventario.</li><li>Interfaces que esconden complejidad innecesaria.</li></ul></div>
+    <div class="panel top teal"><h2>Amplifiers</h2><ul class="clean"><li>Entrenamiento.</li><li>Herramientas y modelos.</li><li>Delegación de autoridad.</li><li>Comunicación rápida y diagnosis.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Espejo</div><div class="section-num">30 / VE > VO > VM</div></div>
+  <div class="canvas split-wide">
+    <div class="panel teal"><h2>La organización nunca puede centralizar toda la Variety.</h2><div class="formula">VE > VO > VM</div><p class="big-copy">Environmental Variety excede Organizational Variety, y ésta excede Management Variety.</p></div>
+    <div class="panel top"><h3>Implicación</h3><ul class="clean"><li>El ambiente debe absorber variedad por self-organization.</li><li>La organización debe absorber variedad por self-regulation.</li><li>Management sólo debe recibir residual variety.</li><li>Si el centro intenta verlo todo, falla por Ashby.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Big Data</div><div class="section-num">31 / Variety asymmetry</div></div>
+  <div class="canvas split">
+    <div class="panel amber"><h2>Big data es poder porque aumenta distinciones y affordances.</h2><p class="big-copy">Una plataforma ve estados que el usuario no ve y tiene más response variety para actuar sobre ellos.</p></div>
+    <div class="panel top"><h3>Asimetría</h3><ul class="clean"><li>Plataforma: ranking, nudging, pricing, bloqueo, recomendación.</li><li>Usuario: aceptar, click, salir, quejarse.</li><li>La diferencia no es sólo privacidad; es cybernetic power.</li></ul></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Reading strategy</div><div class="section-num">32 / Leer a Espejo después de Variety</div></div>
+  <div class="canvas four">
+    <div class="panel top teal"><h3>1. Pregunta estados</h3><p>¿Qué Variety está siendo contada?</p></div>
+    <div class="panel top amber"><h3>2. Pregunta matriz</h3><p>¿Observación, compatibility, response, outcome?</p></div>
+    <div class="panel top red"><h3>3. Pregunta poder</h3><p>¿Quién distingue y quién actúa?</p></div>
+    <div class="panel top violet"><h3>4. Pregunta residual</h3><p>¿Qué llega a management y qué se absorbe localmente?</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><div class="kicker">Takeaways</div><div class="section-num">33 / Lo que debe quedar</div></div>
+  <div class="canvas split-wide">
+    <div class="panel top amber"><div class="takeaway"><div class="mark">01</div><p><strong>Variety es cardinalidad de clases relevantes.</strong> No es cantidad bruta de datos.</p></div><div class="takeaway"><div class="mark">02</div><p><strong>El observador induce una partición.</strong> Sensores y reglas crean estados observables.</p></div><div class="takeaway"><div class="mark">03</div><p><strong>Las matrices hacen visible el conteo.</strong> Observación, compatibilidad, response, outcome y transición.</p></div></div>
+    <div class="panel top teal"><div class="takeaway"><div class="mark">04</div><p><strong>Ashby es el test.</strong> Si VR no absorbe VD, VO sale de VT.</p></div><div class="takeaway"><div class="mark">05</div><p><strong>Attenuation y amplification son diseño.</strong> No trucos.</p></div><div class="takeaway"><div class="mark">06</div><p><strong>Governance distribuye Variety.</strong> Quién distingue, filtra, responde y escala.</p></div></div>
+  </div>
+</section>
+
+</main>
+<div class="source-strip">Fuente: Ashby, Beer, Espejo · deck local</div>
+<nav class="nav" aria-label="Navegación de slides">
+  <button id="prev" aria-label="Slide anterior">&lsaquo;</button>
+  <div id="counter">1 / 34</div>
+  <button id="next" aria-label="Slide siguiente">&rsaquo;</button>
+</nav>
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll(".slide"));
+  const prev = document.getElementById("prev");
+  const next = document.getElementById("next");
+  const counter = document.getElementById("counter");
+  const progress = document.getElementById("progress");
+  let current = 0;
+  function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
+  function show(index){
+    const old=current;
+    current=clamp(index,0,slides.length-1);
+    slides.forEach((s,i)=>{s.classList.toggle("active",i===current);s.classList.toggle("prev",i<current);s.setAttribute("aria-hidden",i===current?"false":"true");});
+    prev.disabled=current===0;next.disabled=current===slides.length-1;
+    counter.textContent=(current+1)+" / "+slides.length;
+    progress.style.width=((current+1)/slides.length*100)+"%";
+    if(old!==current) history.replaceState(null,"","#slide-"+(current+1));
+  }
+  function num(id,fallback){const el=document.getElementById(id);const v=Number(el&&el.value);return Number.isFinite(v)&&v>0?v:fallback;}
+  function fmt(v){return v>=100?Math.ceil(v).toLocaleString():v.toFixed(2).replace(/\.00$/,"");}
+  function updateAshby(){
+    const vd=num("vd",1),vr=num("vr",1),vt=num("vt",1);const vo=vd/vr;const need=Math.ceil(vd/vt);const ok=vo<=vt;
+    document.getElementById("vo").textContent=fmt(vo);document.getElementById("need").textContent=need.toLocaleString();
+    const st=document.getElementById("regStatus");st.classList.toggle("good",ok);st.classList.toggle("bad",!ok);st.textContent=ok?"Hay suficiente response variety: VO cabe en VT.":"No alcanza la response variety. Atenúa VD, amplifica VR o amplía VT.";
+    const max=Math.max(vr,need,1);document.getElementById("barR").style.width=Math.max(2,vr/max*100)+"%";document.getElementById("barN").style.width=Math.max(2,need/max*100)+"%";document.getElementById("barRText").textContent=vr.toLocaleString();document.getElementById("barNText").textContent=need.toLocaleString();
+  }
+  function updateEngineering(){
+    const baseVd=num("baseVd",1),att=num("att",1),baseVr=num("baseVr",1),amp=num("amp",1),target=num("target2",1);
+    const vdEff=baseVd/att;const vrEff=baseVr*amp;const voEff=vdEff/vrEff;const ok=voEff<=target;
+    document.getElementById("vdEff").textContent=fmt(vdEff);document.getElementById("vrEff").textContent=fmt(vrEff);document.getElementById("voEff").textContent=fmt(voEff);
+    const st=document.getElementById("engStatus");st.classList.toggle("good",ok);st.classList.toggle("bad",!ok);st.textContent=ok?"La combinación de attenuation y amplification alcanza el target.":"Aún falta variedad: aumenta A/K o cambia VT.";
+  }
+  prev.addEventListener("click",()=>show(current-1));next.addEventListener("click",()=>show(current+1));
+  document.addEventListener("keydown",(event)=>{if(event.target&&["INPUT","TEXTAREA","SELECT"].includes(event.target.tagName))return;if(["ArrowRight","PageDown"," "].includes(event.key)){event.preventDefault();show(current+1);}if(["ArrowLeft","PageUp"].includes(event.key)){event.preventDefault();show(current-1);}if(event.key==="Home")show(0);if(event.key==="End")show(slides.length-1);if(event.key.toLowerCase()==="f"){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});else document.exitFullscreen().catch(()=>{});}});
+  ["vd","vr","vt"].forEach(id=>{const el=document.getElementById(id);el&&el.addEventListener("input",updateAshby);});
+  ["baseVd","att","baseVr","amp","target2"].forEach(id=>{const el=document.getElementById(id);el&&el.addEventListener("input",updateEngineering);});
+  const match=location.hash.match(/slide-(\d+)/);show(match?Number(match[1])-1:0);updateAshby();updateEngineering();
+})();
+</script>
+</body>
+</html>
